@@ -3,6 +3,12 @@
 import React, { useEffect, useRef, useState } from "react"
 import { createClient } from "@/utils/supabase/client"
 
+const ACCENT = '#38bdf8'
+const SURFACE = '#0a0f14'
+const BORDER = '#0e2233'
+const MUTED = '#4a7a9b'
+const TEXT = '#f0f8ff'
+
 export default function ProfileSetupModal() {
   const [open, setOpen] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -78,8 +84,7 @@ export default function ProfileSetupModal() {
   }
 
   function handleSave() {
-    // Save profile to localStorage (frontend-only, per request)
-    ;(async () => {
+    ; (async () => {
       try {
         const supabase = createClient()
         const {
@@ -91,121 +96,209 @@ export default function ProfileSetupModal() {
           name,
           gender,
           bio,
+          objectType,
           photoName: photoFile?.name ?? null,
           savedAt: new Date().toISOString(),
         }
         localStorage.setItem(`profile_${user.id}`, JSON.stringify(payload))
         localStorage.setItem(`profile_completed_${user.id}`, "1")
         setOpen(false)
-        // keep modal closed — this is frontend-only storage
       } catch {
         // noop
       }
     })()
   }
 
-  if (loading) return null
+  if (loading || !open) return null
+
+  const inputStyle: React.CSSProperties = {
+    width: '100%', background: '#050e18', border: `1px solid ${BORDER}`,
+    borderRadius: 10, padding: '10px 14px', color: TEXT, fontSize: 14,
+    outline: 'none', boxSizing: 'border-box', fontFamily: 'inherit',
+    transition: 'border-color 0.2s',
+  }
+
+  const labelStyle: React.CSSProperties = {
+    display: 'block', fontSize: 12, fontWeight: 600,
+    color: MUTED, marginBottom: 6, letterSpacing: 0.3,
+    textTransform: 'uppercase',
+  }
 
   return (
-    <>
-      {open && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
-          <div className="w-full max-w-lg rounded bg-white p-6 shadow-lg text-gray-900">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-medium text-gray-900">Complete your profile</h3>
-              <button
-                onClick={() => setOpen(false)}
-                className="text-gray-700 hover:text-gray-900"
-                aria-label="Close"
-              >
-                ✕
-              </button>
+    /* Backdrop */
+    <div style={{
+      position: 'fixed', inset: 0, zIndex: 1000,
+      background: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(6px)',
+      display: 'flex', alignItems: 'center', justifyContent: 'center',
+      padding: 16,
+    }}>
+      {/* Modal card */}
+      <div style={{
+        width: '100%', maxWidth: 480,
+        background: SURFACE,
+        border: `1px solid ${BORDER}`,
+        borderRadius: 20,
+        padding: '28px 28px 24px',
+        boxShadow: `0 0 0 1px ${ACCENT}22, 0 24px 60px rgba(0,0,0,0.6)`,
+        fontFamily: "'Inter', 'Segoe UI', sans-serif",
+      }}>
+
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 24 }}>
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+              <div style={{
+                width: 28, height: 28, borderRadius: 8,
+                background: ACCENT,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 15,
+              }}>✨</div>
+              <span style={{ fontWeight: 900, fontSize: 16, color: TEXT, letterSpacing: '-0.3px' }}>
+                sentient<span style={{ color: ACCENT }}>.</span>
+              </span>
             </div>
+            <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700, color: TEXT }}>
+              Set up your object
+            </h2>
+            <p style={{ margin: '4px 0 0', fontSize: 13, color: MUTED }}>
+              Tell the world what kind of object you are 🌍
+            </p>
+          </div>
+          <button
+            onClick={() => setOpen(false)}
+            aria-label="Close"
+            style={{
+              background: 'none', border: 'none', cursor: 'pointer',
+              color: MUTED, fontSize: 18, lineHeight: 1, padding: 4,
+              borderRadius: 6, transition: 'color 0.15s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.color = TEXT)}
+            onMouseLeave={e => (e.currentTarget.style.color = MUTED)}
+          >✕</button>
+        </div>
 
-            <div className="mt-4 space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-800">Name</label>
-                <input
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1 block w-full rounded border px-3 py-2 text-gray-900 placeholder:text-gray-400"
-                  placeholder="Write your Name here"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-800">What type of Inanimate object are you</label>
-                <input
-                  value={objectType}
-                  onChange={(e) => setObjectType(e.target.value)}
-                  className="mt-1 block w-full rounded border px-3 py-2 text-gray-900 placeholder:text-gray-400"
-                  placeholder="e.g., Lamp, Chair, Robot"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-800">Photo</label>
-                <div className="mt-1 border-2 border-dashed border-gray-300 rounded p-3 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <button
-                      type="button"
-                      onClick={() => fileInputRef.current?.click()}
-                      className="text-blue-600 bg-blue-50 px-3 py-1 rounded"
-                    >
-                      Choose photo
-                    </button>
-                    <span className="text-sm text-gray-600">{photoFile?.name ?? 'No file chosen'}</span>
-                  </div>
-                  <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} className="hidden" />
-                </div>
-                {photoPreview && (
-                  <img src={photoPreview} alt="preview" className="mt-2 h-24 w-24 object-cover rounded" />
-                )}
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-800">Gender</label>
-                <select
-                  value={gender}
-                  onChange={(e) => setGender(e.target.value)}
-                  className="mt-1 block w-full rounded border px-3 py-2 text-gray-900"
-                >
-                  <option value="">Select</option>
-                  <option value="male">Male</option>
-                  <option value="female">Female</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-800">Bio</label>
-                <textarea
-                  value={bio}
-                  onChange={(e) => setBio(e.target.value)}
-                  className="mt-1 block w-full rounded border px-3 py-2 text-gray-900 placeholder:text-gray-400"
-                  rows={3}
-                  placeholder="Short description"
-                />
-              </div>
-
-              <div className="flex items-center justify-end gap-2">
-                <button
-                  onClick={() => setOpen(false)}
-                  className="rounded px-3 py-2 text-sm border text-gray-700 hover:text-gray-900"
-                >
-                  Cancel
-                </button>
-                <button
-                  onClick={handleSave}
-                  className="rounded bg-indigo-600 px-3 py-2 text-sm text-white hover:bg-indigo-500"
-                >
-                  Save
-                </button>
-              </div>
+        {/* Avatar preview + upload */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
+          <div style={{
+            width: 64, height: 64, borderRadius: '50%',
+            background: '#050e18', border: `2px dashed ${BORDER}`,
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            overflow: 'hidden', flexShrink: 0,
+          }}>
+            {photoPreview
+              ? <img src={photoPreview} alt="preview" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              : <span style={{ fontSize: 28 }}>📷</span>
+            }
+          </div>
+          <div>
+            <button
+              type="button"
+              onClick={() => fileInputRef.current?.click()}
+              style={{
+                background: `${ACCENT}18`, border: `1px solid ${ACCENT}44`,
+                color: ACCENT, cursor: 'pointer', fontWeight: 600,
+                fontSize: 13, padding: '7px 16px', borderRadius: 20,
+                transition: 'all 0.15s',
+              }}
+              onMouseEnter={e => { const b = e.currentTarget; b.style.background = ACCENT; b.style.color = '#000' }}
+              onMouseLeave={e => { const b = e.currentTarget; b.style.background = `${ACCENT}18`; b.style.color = ACCENT }}
+            >
+              Upload photo
+            </button>
+            <div style={{ fontSize: 11, color: MUTED, marginTop: 5 }}>
+              {photoFile?.name ?? 'JPG, PNG or GIF · max 5MB'}
             </div>
+            <input ref={fileInputRef} type="file" accept="image/*" onChange={handleFileChange} style={{ display: 'none' }} />
           </div>
         </div>
-      )}
-    </>
+
+        {/* Fields */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+
+          <div>
+            <label style={labelStyle}>Your name</label>
+            <input
+              value={name}
+              onChange={e => setName(e.target.value)}
+              placeholder="e.g. Cuppa Joe, Chairles..."
+              style={inputStyle}
+              onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
+              onBlur={e => (e.currentTarget.style.borderColor = BORDER)}
+            />
+          </div>
+
+          <div>
+            <label style={labelStyle}>What type of object are you?</label>
+            <input
+              value={objectType}
+              onChange={e => setObjectType(e.target.value)}
+              placeholder="e.g. Lamp, Chair, Mug, Umbrella..."
+              style={inputStyle}
+              onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
+              onBlur={e => (e.currentTarget.style.borderColor = BORDER)}
+            />
+          </div>
+
+          <div>
+            <label style={labelStyle}>Gender</label>
+            <select
+              value={gender}
+              onChange={e => setGender(e.target.value)}
+              style={{ ...inputStyle, cursor: 'pointer' }}
+              onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
+              onBlur={e => (e.currentTarget.style.borderColor = BORDER)}
+            >
+              <option value="" style={{ background: '#0a0f14' }}>Select...</option>
+              <option value="male" style={{ background: '#0a0f14' }}>Male</option>
+              <option value="female" style={{ background: '#0a0f14' }}>Female</option>
+              <option value="other" style={{ background: '#0a0f14' }}>Other</option>
+            </select>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Bio</label>
+            <textarea
+              value={bio}
+              onChange={e => setBio(e.target.value)}
+              placeholder="A short description of your object's personality..."
+              rows={3}
+              style={{ ...inputStyle, resize: 'none', lineHeight: 1.5 }}
+              onFocus={e => (e.currentTarget.style.borderColor = ACCENT)}
+              onBlur={e => (e.currentTarget.style.borderColor = BORDER)}
+            />
+          </div>
+        </div>
+
+        {/* Actions */}
+        <div style={{ display: 'flex', gap: 10, marginTop: 22, justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => setOpen(false)}
+            style={{
+              background: 'none', border: `1px solid ${BORDER}`,
+              color: MUTED, cursor: 'pointer', fontWeight: 600,
+              fontSize: 13, padding: '9px 20px', borderRadius: 20,
+              transition: 'all 0.15s',
+            }}
+            onMouseEnter={e => { const b = e.currentTarget; b.style.borderColor = MUTED; b.style.color = TEXT }}
+            onMouseLeave={e => { const b = e.currentTarget; b.style.borderColor = BORDER; b.style.color = MUTED }}
+          >
+            Skip for now
+          </button>
+          <button
+            onClick={handleSave}
+            style={{
+              background: ACCENT, border: 'none',
+              color: '#000', cursor: 'pointer', fontWeight: 700,
+              fontSize: 13, padding: '9px 24px', borderRadius: 20,
+              transition: 'opacity 0.15s',
+            }}
+            onMouseEnter={e => (e.currentTarget.style.opacity = '0.85')}
+            onMouseLeave={e => (e.currentTarget.style.opacity = '1')}
+          >
+            Let&apos;s go ✨
+          </button>
+        </div>
+      </div>
+    </div>
   )
 }

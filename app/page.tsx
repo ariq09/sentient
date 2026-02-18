@@ -1,7 +1,7 @@
 import ProfileSetupModal from '@/app/components/ProfileSetupModal'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-
+const a = 0;
 export default async function Home() {
   const supabase = await createClient()
 

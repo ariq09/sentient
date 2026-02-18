@@ -67,7 +67,7 @@ export default async function Home() {
             <div className="CustomGlass w-fit h-fit p-1">
               <a
                 href="/signup"
-                className="rounded-2xl flex items-center gap-2 px-6 py-3 bg-white text-black font-extrabold text-sm whitespace-nowrap hover:bg-white/90 transition-colors"
+                className="rounded-3xl flex items-center gap-2 px-6 py-3 bg-white text-black text-sm whitespace-nowrap hover:bg-white/90 transition-colors"
               >
                 Sign Up
               </a>
@@ -76,7 +76,7 @@ export default async function Home() {
             <div className="CustomGlass w-fit h-fit p-1">
               <a
                 href="/login"
-                className="rounded-2xl px-6 py-3 bg-white text-black font-extrabold text-sm whitespace-nowrap hover:bg-white/90 transition-colors inline-block"
+                className="rounded-3xl px-6 py-3 bg-white text-black text-sm whitespace-nowrap hover:bg-white/90 transition-colors inline-block"
               >
                 Sign In
               </a>

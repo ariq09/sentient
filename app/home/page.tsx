@@ -1,6 +1,6 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import Link from 'next/link'
+import SentientFeed from './SentientFeed'
 
 export default async function HomePage() {
   const supabase = await createClient()
@@ -9,6 +9,10 @@ export default async function HomePage() {
     data: { user },
   } = await supabase.auth.getUser()
 
+  if (!user) {
+    redirect('/login')
+  }
+
   const signOut = async () => {
     'use server'
     const supabase = await createClient()
@@ -16,30 +20,5 @@ export default async function HomePage() {
     redirect('/login')
   }
 
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-24 gap-4">
-      <h1 className="text-4xl font-bold">Hello, {user?.email || 'Guest'}</h1>
-
-      {user ? (
-        <div className="flex flex-col items-center gap-4">
-          <p>You are logged in!</p>
-          <form action={signOut}>
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-              Sign Out
-            </button>
-          </form>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-4">
-          <p>You are not logged in.</p>
-          <Link
-            href="/login"
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          >
-            Sign In
-          </Link>
-        </div>
-      )}
-    </div>
-  )
+  return <SentientFeed userEmail={user.email ?? ''} onSignOut={signOut} />
 }

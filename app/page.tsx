@@ -1,3 +1,4 @@
+import ProfileSetupModal from '@/app/components/ProfileSetupModal'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -17,6 +18,7 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center p-24 gap-4">
+      <ProfileSetupModal />
       <h1 className="text-4xl font-bold">Hello, {user?.email || 'Guest'}</h1>
 
       {user ? (

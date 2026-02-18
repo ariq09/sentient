@@ -20,7 +20,7 @@ export async function login(formData: FormData) {
     }
 
     revalidatePath('/', 'layout')
-    redirect('/')
+    redirect('/home')
 }
 
 
@@ -55,7 +55,7 @@ export async function signup(formData: FormData) {
     if (authData.session) {
         // User is signed in (email confirmation disabled or auto-confirm)
         revalidatePath('/', 'layout')
-        redirect('/')
+        redirect('/home')
     } else {
         // Email confirmation required
         redirect('/verify-email')

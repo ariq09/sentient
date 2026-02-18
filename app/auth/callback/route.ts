@@ -1,18 +1,18 @@
 import { NextResponse } from 'next/server'
-// The client you created from the Server-Side Auth instructions
+
 import { createClient } from '@/utils/supabase/server'
 
 export async function GET(request: Request) {
     const { searchParams, origin } = new URL(request.url)
     const code = searchParams.get('code')
-    // if "next" is in param, use it as the redirect URL
+    
     const next = searchParams.get('next') ?? '/home'
 
     if (code) {
         const supabase = await createClient()
         const { error } = await supabase.auth.exchangeCodeForSession(code)
         if (!error) {
-            // Detect brand-new signup: account created within the last 5 minutes
+            
             const { data: { user } } = await supabase.auth.getUser()
             const isNewSignup = user?.created_at
                 ? (Date.now() - new Date(user.created_at).getTime()) < 5 * 60 * 1000
@@ -31,6 +31,6 @@ export async function GET(request: Request) {
         }
     }
 
-    // return the user to an error page with instructions
+    
     return NextResponse.redirect(`${origin}/auth/auth-code-error`)
 }

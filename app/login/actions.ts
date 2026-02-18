@@ -40,7 +40,7 @@ export async function signup(formData: FormData) {
     if (error) {
         console.error('Signup error:', error)
         let errorMessage = error.message
-        // Check for "already registered" error from Supabase
+        
         if (errorMessage.toLowerCase().includes('already registered') || errorMessage.toLowerCase().includes('already exists')) {
             errorMessage = 'This email already is signedup and exists you cannot sign up with this email anymore'
         }
@@ -53,11 +53,11 @@ export async function signup(formData: FormData) {
     }
 
     if (authData.session) {
-        // User is signed in (email confirmation disabled or auto-confirm)
+        
         revalidatePath('/', 'layout')
         redirect('/pickyourprofile')
     } else {
-        // Email confirmation required
+        
         redirect('/verify-email')
     }
 }

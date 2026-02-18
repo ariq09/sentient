@@ -1,4 +1,3 @@
-import ProfileSetupModal from '@/app/components/ProfileSetupModal'
 import { DottedSurface } from '@/app/components/DottedSurface'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
@@ -20,8 +19,6 @@ export default async function Home() {
   return (
     <main className="w-full min-h-screen bg-[#3037ff] flex items-center justify-center relative overflow-hidden px-4">
       <DottedSurface className="z-60 overflow-hidden" />
-
-      <ProfileSetupModal />
 
       <section
         className="flex flex-col items-center justify-center w-full max-w-5xl h-fit absolute top-80 -translate-y-1/2 gap-10 z-[61] text-center px-4"

@@ -1,4 +1,5 @@
 import ProfileSetupModal from '@/app/components/ProfileSetupModal'
+import { DottedSurface } from '@/app/components/DottedSurface'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
@@ -17,38 +18,72 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center p-24 gap-4">
-      <ProfileSetupModal />
-      <h1 className="text-4xl font-bold">Hello, {user?.email || 'Guest'}</h1>
+    <main className="w-full min-h-screen bg-[#3037ff] flex items-center justify-center relative overflow-hidden px-4">
+      <DottedSurface className="z-60 overflow-hidden" />
 
-      {user ? (
-        <div className="flex flex-col items-center gap-4">
-          <p>You are logged in!</p>
-          <form action={signOut}>
-            <button className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-              Sign Out
-            </button>
-          </form>
-        </div>
-      ) : (
-        <div className="flex flex-col items-center gap-4">
-          <p>You are not logged in.</p>
-          <div className="flex gap-4">
-            <a
-              href="/login"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Sign In
-            </a>
-            <a
-              href="/signup"
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-            >
-              Sign Up
-            </a>
+      <ProfileSetupModal />
+
+      <section
+        className="flex flex-col items-center justify-center w-full max-w-5xl h-fit absolute top-80 -translate-y-1/2 gap-10 z-[61] text-center px-4"
+        aria-label="Sentient Hero Section"
+      >
+        <article className="flex flex-col items-center justify-center text-white gap-3">
+          <h1 className="text-3xl sm:text-5xl md:text-5xl lg:text-7xl font-bold leading-tight">
+            Welcome to Sentient.
+          </h1>
+          <h2 className="text-lg sm:text-xl md:text-xl lg:text-3xl leading-snug">
+            {user
+              ? `Good to see you, ${user.email}`
+              : 'Sign in or create an account to get started'}
+          </h2>
+        </article>
+
+        {user ? (
+          /* ── Logged-in state ── */
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
+            <div className="CustomGlass w-fit h-fit p-1">
+              <a
+                href="/home"
+                className="rounded-2xl flex items-center gap-2 px-6 py-3 bg-white text-black font-extrabold text-sm whitespace-nowrap hover:bg-white/90 transition-colors"
+              >
+                Go to Home
+              </a>
+            </div>
+
+            <div className="CustomGlass w-fit h-fit p-1">
+              <form action={signOut}>
+                <button
+                  type="submit"
+                  className="rounded-2xl px-6 py-3 bg-white text-black font-extrabold text-sm whitespace-nowrap hover:bg-white/90 transition-colors"
+                >
+                  Sign Out
+                </button>
+              </form>
+            </div>
           </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          /* ── Logged-out state ── */
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
+            <div className="CustomGlass w-fit h-fit p-1">
+              <a
+                href="/signup"
+                className="rounded-2xl flex items-center gap-2 px-6 py-3 bg-white text-black font-extrabold text-sm whitespace-nowrap hover:bg-white/90 transition-colors"
+              >
+                Sign Up
+              </a>
+            </div>
+
+            <div className="CustomGlass w-fit h-fit p-1">
+              <a
+                href="/login"
+                className="rounded-2xl px-6 py-3 bg-white text-black font-extrabold text-sm whitespace-nowrap hover:bg-white/90 transition-colors inline-block"
+              >
+                Sign In
+              </a>
+            </div>
+          </div>
+        )}
+      </section>
+    </main>
   )
 }

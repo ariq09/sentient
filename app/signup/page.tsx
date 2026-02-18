@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { signup } from '@/app/login/actions'
 import AuthLayout from '@/app/components/AuthLayout'
 
@@ -14,9 +15,9 @@ export default async function SignupPage({
       subtitle={
         <>
           Already have an account?{' '}
-          <a href="/login" className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 transition-all">
+          <Link href="/login" className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 transition-all">
             Sign in here
-          </a>
+          </Link>
         </>
       }
     >

@@ -20,10 +20,10 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
         {/* Gradient blob 3 */}
         <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
-        
+
         {/* Grid pattern */}
         <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(59,130,246,.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(59,130,246,.08)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
-        
+
         {/* Radial gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-100/30 to-gray-50"></div>
       </div>
@@ -44,11 +44,11 @@ export default function AuthLayout({ children, title, subtitle }: AuthLayoutProp
             </div>
           </div>
         </Link>
-        
+
         <div className="w-full max-w-md space-y-8 animate-fadeIn animation-delay-200">
           {/* Heading section with glow effect */}
           <div className="relative space-y-3">
-            <div className="absolute -inset-4 bg-gradient-to-r from-blue-300/20 via-indigo-300/20 to-purple-300/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
+            <div className="absolute -inset-4 bg-gradient-to-r from-blue-300/20 via-indigo-300/20 to-purple-300/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"></div>
             <div className="relative">
               <h2 className="text-center text-4xl font-bold tracking-tight text-gray-900 drop-shadow-sm">
                 {title}

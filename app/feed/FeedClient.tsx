@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 
 // ─── Color palette ─────────────────────────────────────────────────────────────
 const ACCENT = '#7c6ef7'
@@ -376,12 +377,13 @@ export default function FeedPage() {
             }}>
                 {/* Logo */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
-                    <div style={{
-                        width: 32, height: 32, borderRadius: 10,
-                        background: `linear-gradient(135deg, ${ACCENT}, ${ACCENT2})`,
-                        display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontWeight: 900, fontSize: 18, color: '#fff',
-                    }}>S</div>
+                    <Image
+                        src="/sentient-logo.png"
+                        alt="Sentient"
+                        width={32}
+                        height={32}
+                        style={{ objectFit: 'contain' }}
+                    />
                     <span style={{ fontWeight: 800, fontSize: 18, letterSpacing: '-0.5px' }}>sentient</span>
                 </div>
 

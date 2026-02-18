@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { login } from './actions'
 import AuthLayout from '@/app/components/AuthLayout'
 
@@ -8,9 +9,9 @@ export default function LoginPage() {
       subtitle={
         <>
           Don't have an account?{' '}
-          <a href="/signup" className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 transition-all">
+          <Link href="/signup" className="font-semibold text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 hover:from-blue-500 hover:via-indigo-500 hover:to-purple-500 transition-all">
             Create one now
-          </a>
+          </Link>
         </>
       }
     >

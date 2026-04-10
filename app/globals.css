@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 /* ── Theme CSS variables ── */
-/* Light (default — also always used by landing page) */
+/* Light — muted gray-lavender, not white, so switching from dark isn't a flashbang */
 :root {
-  --app-bg:       #F5F6FF;
-  --app-surface:  #FFFFFF;
-  --app-elevated: #EDEEFF;
-  --app-text:     #1F2937;
-  --app-text-2:   #4B5563;
-  --app-text-3:   #9CA3AF;
-  --app-border:   #E5E7EB;
+  --app-bg:       #E4E5F0;
+  --app-surface:  #EEEEF8;
+  --app-elevated: #E0E1ED;
+  --app-text:     #1C1E2D;
+  --app-text-2:   #555A72;
+  --app-text-3:   #8D93AB;
+  --app-border:   #CACDE3;
 }
 
 /* Dark */
@@ -37,11 +37,11 @@
   --color-accent: #A5B4FC;
 
   /* Light palette */
-  --color-l-bg: #F5F6FF;
-  --color-l-surface: #FFFFFF;
-  --color-l-text: #1F2937;
-  --color-l-muted: #6B7280;
-  --color-l-border: #E5E7EB;
+  --color-l-bg: #E4E5F0;
+  --color-l-surface: #EEEEF8;
+  --color-l-text: #1C1E2D;
+  --color-l-muted: #555A72;
+  --color-l-border: #CACDE3;
 
   /* Dark palette */
   --color-d-bg: #0A0B14;

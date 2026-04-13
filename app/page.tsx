@@ -1,4 +1,3 @@
-import { DottedSurface } from '@/app/components/DottedSurface'
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 const a = 0;
@@ -18,7 +17,7 @@ export default async function Home() {
 
   return (
     <main className="w-full min-h-screen bg-[#3037ff] flex items-center justify-center relative overflow-hidden px-4">
-      <DottedSurface className="z-60 overflow-hidden" />
+      
 
       <section
         className="flex flex-col items-center justify-center w-full max-w-5xl h-fit absolute top-80 -translate-y-1/2 gap-10 z-[61] text-center px-4"
@@ -40,10 +39,10 @@ export default async function Home() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-5">
             <div className="CustomGlass w-fit h-fit p-1">
               <a
-                href="/home"
+                href="/feed"
                 className="rounded-2xl flex items-center gap-2 px-6 py-3 bg-white text-black font-extrabold text-sm whitespace-nowrap hover:bg-white/90 transition-colors"
               >
-                Go to Home
+                Go to Feed
               </a>
             </div>
 

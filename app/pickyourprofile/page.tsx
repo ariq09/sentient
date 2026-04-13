@@ -16,28 +16,14 @@ export default function PickYourProfilePage() {
   const fileInputRef = useRef<HTMLInputElement>(null)
 
   const objectOptions = [
-    { id: 'lamp', name: 'Lamp', icon: '💡' },
-    { id: 'phone', name: 'Phone', icon: '📱' },
-    { id: 'computer', name: 'Computer', icon: '💻' },
-    { id: 'watch', name: 'Watch', icon: '⌚' },
-    { id: 'plant', name: 'Plant', icon: '🌱' },
-    { id: 'book', name: 'Book', icon: '📚' },
-    { id: 'camera', name: 'Camera', icon: '📷' },
-    { id: 'speaker', name: 'Speaker', icon: '🔊' },
+    { id: 'lamp', name: 'Lamp', icon: '/bulb.svg' },
+    { id: 'plant', name: 'Plant', icon: '/plant.svg' },
+    { id: 'book', name: 'Book', icon: '/book.svg' },
+    { id: 'camera', name: 'Camera', icon: '/camera.svg' },
+
   ]
 
-  const interestOptions = [
-    'Technology',
-    'Art',
-    'Music',
-    'Gaming',
-    'Sports',
-    'Travel',
-    'Food',
-    'Fashion',
-    'Nature',
-    'Reading',
-  ]
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -68,19 +54,50 @@ export default function PickYourProfilePage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    // Validate required fields
+    if (!formData.username || !photoPreview) {
+      alert('Please fill in all required fields: Username and Photo')
+      return
+    }
+
+    if (!selectedObject) {
+      alert('Please select an inanimate object icon!')
+      return
+    }
+
     setIsLoading(true)
-    
+
     try {
-      // TODO: Add logic to save profile data including photo, object, and interests
-      console.log('Profile data:', {
-        ...formData,
-        selectedObject,
-        selectedInterests,
-        photo: photoPreview,
+      const selectedOption = objectOptions.find(opt => opt.id === selectedObject);
+      const iconValue = selectedOption ? selectedOption.icon : null;
+
+      const response = await fetch('/api/profile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: formData.username,
+          fullName: formData.fullName,
+          bio: formData.bio,
+          image: photoPreview,
+          icon: iconValue,
+          selectedInterests,
+        }),
       })
-      // window.location.href = '/home'
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to save profile')
+      }
+
+      // Redirect to the new profile page
+      window.location.href = `/myprofile/${data.profileId}`
     } catch (error) {
       console.error('Error saving profile:', error)
+      alert(error instanceof Error ? error.message : 'An error occurred while saving your profile')
     } finally {
       setIsLoading(false)
     }
@@ -139,26 +156,20 @@ export default function PickYourProfilePage() {
                 <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-2">
                   Full Name
                 </label>
-                <div className="absolute inset-y-0 left-4 top-9 flex items-center pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd"></path>
-                  </svg>
-                </div>
                 <input
                   id="fullName"
                   name="fullName"
                   type="text"
                   value={formData.fullName}
                   onChange={handleChange}
-                  required
-                  className="w-full px-4 py-3.5 pl-11 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
+                  className="w-full px-4 py-3.5 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                   placeholder="John Doe"
                 />
               </div>
 
               <div className="relative">
                 <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
-                  Username
+                  Username *
                 </label>
                 <div className="absolute inset-y-0 left-4 top-9 flex items-center pointer-events-none">
                   <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
@@ -177,25 +188,7 @@ export default function PickYourProfilePage() {
                 />
               </div>
 
-              <div className="relative">
-                <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-2">
-                  Bio
-                </label>
-                <div className="absolute top-10 left-4 flex items-start pointer-events-none">
-                  <svg className="w-5 h-5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd"></path>
-                  </svg>
-                </div>
-                <textarea
-                  id="bio"
-                  name="bio"
-                  value={formData.bio}
-                  onChange={handleChange}
-                  rows={4}
-                  className="w-full px-4 py-3.5 pl-11 rounded-xl bg-gray-50 border border-gray-200 text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:ring-blue-500 focus:border-transparent transition-all duration-300 resize-none"
-                  placeholder="Tell us about yourself..."
-                />
-              </div>
+
             </div>
           </div>
 
@@ -209,40 +202,26 @@ export default function PickYourProfilePage() {
                   key={obj.id}
                   type="button"
                   onClick={() => setSelectedObject(obj.id)}
-                  className={`p-6 rounded-xl border-2 transition-all duration-300 flex flex-col items-center gap-3 ${
-                    selectedObject === obj.id
-                      ? 'border-blue-500 bg-blue-50 shadow-lg'
-                      : 'border-gray-200 bg-white hover:border-gray-300'
-                  }`}
+                  className={`p-6 rounded-xl border-2 transition-all duration-300 flex flex-col items-center gap-3 ${selectedObject === obj.id
+                    ? 'border-blue-500 bg-blue-50 shadow-lg'
+                    : 'border-gray-200 bg-white hover:border-gray-300'
+                    }`}
                 >
-                  <span className="text-4xl">{obj.icon}</span>
+                  <div className="relative w-10 h-10">
+                    <img 
+                      src={obj.icon} 
+                      alt={obj.name}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
                   <span className="text-sm font-semibold text-gray-900">{obj.name}</span>
                 </button>
               ))}
             </div>
           </div>
 
-          {/* Interests Section */}
-          <div className="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
-            <h2 className="text-2xl font-bold text-gray-900 mb-2">What Do You Like?</h2>
-            <p className="text-gray-600 mb-6">Select all that apply</p>
-            <div className="grid grid-cols-2 sm:grid-cols-5 gap-3">
-              {interestOptions.map((interest) => (
-                <button
-                  key={interest}
-                  type="button"
-                  onClick={() => toggleInterest(interest)}
-                  className={`px-4 py-3 rounded-lg border-2 font-medium transition-all duration-300 text-center ${
-                    selectedInterests.includes(interest)
-                      ? 'border-blue-500 bg-blue-100 text-blue-900'
-                      : 'border-gray-200 bg-gray-50 text-gray-700 hover:border-gray-300'
-                  }`}
-                >
-                  {interest}
-                </button>
-              ))}
-            </div>
-          </div>
+
+
 
           {/* Submit Button */}
           <div className="relative">

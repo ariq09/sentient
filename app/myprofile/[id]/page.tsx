@@ -3,6 +3,8 @@ import Image from 'next/image'
 import { redirect } from 'next/navigation'
 import { revalidatePath } from 'next/cache'
 
+export const dynamic = 'force-dynamic'
+
 const postProfileComment = async (formData: FormData) => {
   'use server'
   const commentText = formData.get('comment')

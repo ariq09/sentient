@@ -3,6 +3,8 @@ import { redirect } from 'next/navigation'
 import Image from 'next/image'
 import { revalidatePath } from 'next/cache'
 
+export const dynamic = 'force-dynamic'
+
 const postStatus = async (formData: FormData) => {
     'use server'
     const statusText = formData.get('status')

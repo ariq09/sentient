@@ -4,8 +4,7 @@ const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 async function run() {
-  const { data: profiles, error } = await supabase.from('profiles').select('*')
-  console.log('Profiles data:', JSON.stringify(profiles, null, 2))
-  console.log('Error:', error)
+  const { data: profiles, error } = await supabase.from('profiles').select('id, name, auth_id').order('id', { ascending: false }).limit(10)
+  console.log('Last 10 Profiles data:', JSON.stringify(profiles, null, 2))
 }
 run()

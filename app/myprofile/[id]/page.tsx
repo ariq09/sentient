@@ -48,12 +48,14 @@ export default async function MyProfilePage({ params }: { params: Promise<{ id: 
 
   const profileData: Profile = profile
 
-  // Fetch all profiles to determine the current user (heuristic mapping)
+  // Fetch all profiles to determine the current user (securely tracking tokens)
+  const { data: { user } } = await supabase.auth.getUser()
   const { data: profilesData } = await supabase
     .from('profiles')
     .select('*')
     .order('created_at', { ascending: false })
-  const currentUserProfile = profilesData && profilesData.length > 0 ? profilesData[0] : null
+  const allProfiles = profilesData || []
+  const currentUserProfile = user ? allProfiles.find(p => p.auth_id === user.id) : null
 
   // Fetch statuses written specifically by this user, including all comments
   const { data: statusesData } = await supabase

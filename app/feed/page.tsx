@@ -62,10 +62,9 @@ export default async function FeedPage() {
     // Fallback if profiles table is empty or error
     const allProfiles = profiles || []
 
-    // Heuristic: We treat the latest created profile as the 'current' user's profile
-    // In a production app, you would add a `user_id` column to public.profiles linking to auth.users.id
-    const currentUserProfile = allProfiles.length > 0 ? allProfiles[0] : null
-    const otherUsers = allProfiles.length > 1 ? allProfiles.slice(1) : []
+    // Map the true, authenticated user directly to their securely matched profile schema
+    const currentUserProfile = user ? allProfiles.find(p => p.auth_id === user.id) : null
+    const otherUsers = currentUserProfile ? allProfiles.filter(p => p.id !== currentUserProfile.id) : allProfiles
 
     // Fetch all statuses and their related comments
     const { data: statusesData, error: statusesError } = await supabase

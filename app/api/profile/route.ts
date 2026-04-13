@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
     }
 
     const supabase = await createClient()
+    const { data: { user } } = await supabase.auth.getUser()
 
     // Insert profile into Supabase
     const { data, error } = await supabase
@@ -23,6 +24,7 @@ export async function POST(request: NextRequest) {
         name: username,
         photo_url: image,
         icon: icon,
+        auth_id: user?.id || null
       })
       .select()
       .single()

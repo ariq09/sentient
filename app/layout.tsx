@@ -1,20 +1,18 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Manrope } from "next/font/google";
+import { Sora, Inter } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/app/components/ThemeProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const sora = Sora({
+  variable: "--font-sora",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
-});
-
-const manrope = Manrope({
-  variable: "--font-manrope",
-  subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -30,11 +28,12 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${manrope.variable} antialiased`}
+        className={`${sora.variable} ${inter.variable} antialiased`}
         suppressHydrationWarning
       >
-        {children}
-        
+        <ThemeProvider>
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

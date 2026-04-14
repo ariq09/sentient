@@ -1,96 +1,80 @@
 @import "tailwindcss";
 
+/* ── Theme CSS variables ── */
+/* Light (default — also always used by landing page) */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --app-bg:       #F5F6FF;
+  --app-surface:  #FFFFFF;
+  --app-elevated: #EDEEFF;
+  --app-text:     #1F2937;
+  --app-text-2:   #4B5563;
+  --app-text-3:   #9CA3AF;
+  --app-border:   #E5E7EB;
 }
+
+/* Dark */
+.dark {
+  --app-bg:       #0A0B14;
+  --app-surface:  #13141F;
+  --app-elevated: #1C1D2E;
+  --app-text:     #F9FAFB;
+  --app-text-2:   #9CA3AF;
+  --app-text-3:   #6B7280;
+  --app-border:   #2D2F45;
+}
+
+/* Class-based dark mode */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-manrope: var(--font-manrope);
-}
+  /* Fonts */
+  --font-sans: var(--font-inter);
+  --font-display: var(--font-sora);
 
+  /* Brand colors */
+  --color-primary: #6366F1;
+  --color-primary-hover: #818CF8;
+  --color-accent: #A5B4FC;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Light palette */
+  --color-l-bg: #F5F6FF;
+  --color-l-surface: #FFFFFF;
+  --color-l-text: #1F2937;
+  --color-l-muted: #6B7280;
+  --color-l-border: #E5E7EB;
+
+  /* Dark palette */
+  --color-d-bg: #0A0B14;
+  --color-d-surface: #13141F;
+  --color-d-elevated: #1C1D2E;
+  --color-d-text: #F9FAFB;
+  --color-d-muted: #9CA3AF;
+  --color-d-border: #2D2F45;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
 }
 
-
-@layer base {
-  body {
-    @apply bg-[#0a0a0a];
-  }
-
-  p {
-    @apply text-white font-manrope;
-  }
-
-  h2 {
-    @apply text-white font-manrope;
-  }
-
-  span {
-    @apply text-white font-manrope;
-  }
-}
-
-@layer utilities {
-  @keyframes frost-move {
-    0% {
-      background-position: 0% 50%;
-    }
-
-    50% {
-      background-position: 100% 50%;
-    }
-
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  .animate-frost {
-    animation: frost-move 3s ease-in-out infinite;
-    background-size: 200% 200%;
-  }
-}
-
-@layer components {
-  .CustomGlass {
-    @apply relative overflow-hidden backdrop-blur-lg rounded-4xl;
-    backdrop-filter: blur(16px) saturate(1.2);
-    background-color: rgba(224, 242, 254, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-
-  .glass-haze {
-    @apply rounded-4xl;
-    backdrop-filter: blur(12px) saturate(1.5);
-    background-color: rgba(223, 223, 223, 0.18);
-    border: 1px solid rgba(138, 138, 138, 0.25);
-  }
-}
-
-
-/* In globals.css or your CSS file */
-/* Hides scrollbars on Chrome, Safari, Edge */
+/* Scrollbar utilities */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
-
-/* Hides scrollbars on Firefox */
 .scrollbar-hide {
   scrollbar-width: none;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
 }

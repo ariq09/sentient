@@ -1,7 +1,8 @@
 'use client'
 
-import Image from 'next/image'
 import Link from 'next/link'
+import Image from 'next/image'
+import { ThemeToggle } from './ThemeToggle'
 
 interface AuthLayoutProps {
   children: React.ReactNode
@@ -11,97 +12,45 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({ children, title, subtitle }: AuthLayoutProps) {
   return (
-    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-gray-50 via-blue-50 to-indigo-100 flex flex-col items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gradient blob 1 */}
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob"></div>
-        {/* Gradient blob 2 */}
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-indigo-300 rounded-full mix-blend-multiply filter blur-3xl opacity-30 animate-blob animation-delay-2000"></div>
-        {/* Gradient blob 3 */}
-        <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-purple-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-4000"></div>
+    <div className="min-h-screen bg-[var(--app-bg)] flex flex-col items-center justify-center py-12 px-4">
 
-        {/* Grid pattern */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,rgba(59,130,246,.08)_1px,transparent_1px),linear-gradient(to_bottom,rgba(59,130,246,.08)_1px,transparent_1px)] bg-[size:40px_40px]"></div>
+      {/* Subtle background glow */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-[#6366F1]/10 blur-[120px] rounded-full pointer-events-none" />
 
-        {/* Radial gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-100/30 to-gray-50"></div>
+      {/* Theme toggle — top right */}
+      <div className="fixed top-4 right-4 z-50">
+        <ThemeToggle />
       </div>
 
-      {/* Content */}
-      <div className="relative z-10">
-        <Link href="/" className="mb-8 block animate-fadeIn">
-          <div className="relative w-24 h-24 group">
-            <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-2xl blur opacity-0 group-hover:opacity-100 transition-all duration-500"></div>
-            <div className="relative bg-gray-950 rounded-2xl p-2">
-              <Image
-                src="/sentient-logo.png"
-                alt="Sentient"
-                width={96}
-                height={96}
-                className="object-contain"
-              />
-            </div>
+      <div className="relative z-10 w-full max-w-md">
+
+        {/* Logo */}
+        <Link href="/" className="flex justify-center mb-10">
+          <div className="bg-[var(--app-surface)] border border-[var(--app-border)] rounded-2xl p-3">
+            <Image
+              src="/sentient-logo.png"
+              alt="Sentient"
+              width={48}
+              height={48}
+              className="object-contain"
+            />
           </div>
         </Link>
 
-        <div className="w-full max-w-md space-y-8 animate-fadeIn animation-delay-200">
-          {/* Heading section with glow effect */}
-          <div className="relative space-y-3">
-            <div className="absolute -inset-4 bg-gradient-to-r from-blue-300/20 via-indigo-300/20 to-purple-300/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none"></div>
-            <div className="relative">
-              <h2 className="text-center text-4xl font-bold tracking-tight text-gray-900 drop-shadow-sm">
-                {title}
-              </h2>
-              <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 rounded-full blur-sm"></div>
-            </div>
-            <p className="mt-6 text-center text-sm text-gray-600">
-              {subtitle}
-            </p>
-          </div>
+        {/* Heading */}
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-[var(--app-text)] font-display mb-2">
+            {title}
+          </h2>
+          <p className="text-sm text-[var(--app-text-2)]">{subtitle}</p>
+        </div>
+
+        {/* Card */}
+        <div className="bg-[var(--app-surface)] border border-[var(--app-border)] rounded-2xl p-8 shadow-xl">
           {children}
         </div>
-      </div>
 
-      <style jsx>{`
-        @keyframes blob {
-          0%, 100% {
-            transform: translate(0, 0) scale(1);
-          }
-          33% {
-            transform: translate(30px, -50px) scale(1.1);
-          }
-          66% {
-            transform: translate(-20px, 20px) scale(0.9);
-          }
-        }
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-        .animate-blob {
-          animation: blob 7s infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-        .animation-delay-4000 {
-          animation-delay: 4s;
-        }
-        .animation-delay-200 {
-          animation-delay: 0.2s;
-        }
-        .animate-fadeIn {
-          animation: fadeIn 0.8s ease-out forwards;
-          opacity: 0;
-        }
-      `}</style>
+      </div>
     </div>
   )
 }

@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json()
     const { username, fullName, bio, image, icon, selectedInterests } = body
 
-    // Validate required fields
+
     if (!username || !image) {
       return NextResponse.json(
         { error: 'Username and image are required' },
@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Insert profile into Supabase
+
     const { data, error } = await supabase
       .from('profiles')
       .insert({

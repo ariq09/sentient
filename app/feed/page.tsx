@@ -244,8 +244,8 @@ export default async function FeedPage() {
                                         >
                                             @{statusItem.profiles?.name || 'Unknown'}
                                         </a>
-                                        <p suppressHydrationWarning className="text-xs text-[var(--app-text-3)]">
-                                            {new Date(statusItem.created_at).toLocaleString()}
+                                        <p className="text-xs text-[var(--app-text-3)]">
+                                            {statusItem.created_at ? new Date(statusItem.created_at).toISOString().split('T')[0] : ''}
                                         </p>
                                     </div>
                                 </div>
@@ -302,8 +302,8 @@ export default async function FeedPage() {
                                                     <div>
                                                         <div className="flex items-center gap-2 mb-0.5">
                                                             <span className="font-semibold text-xs text-[var(--app-text)]">@{comment.profiles?.name || 'Unknown'}</span>
-                                                            <span suppressHydrationWarning className="text-[10px] text-[var(--app-text-3)]">
-                                                                {new Date(comment.created_at).toLocaleString()}
+                                                            <span className="text-[10px] text-[var(--app-text-3)]">
+                                                                {comment.created_at ? new Date(comment.created_at).toISOString().split('T')[0] : ''}
                                                             </span>
                                                         </div>
                                                         <p className="text-xs text-[var(--app-text-2)] leading-relaxed">{comment.comment}</p>
@@ -360,7 +360,7 @@ export default async function FeedPage() {
                                                 @{profile.name}
                                             </p>
                                             <p className="text-xs text-[var(--app-text-3)] truncate">
-                                                {new Date(profile.created_at).toLocaleDateString()}
+                                                {profile.created_at ? new Date(profile.created_at).toISOString().split('T')[0] : ''}
                                             </p>
                                         </div>
                                     </a>

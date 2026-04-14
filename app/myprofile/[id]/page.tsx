@@ -121,9 +121,7 @@ export default async function MyProfilePage({ params }: { params: Promise<{ id: 
               @{profileData.name}
             </h1>
             <p className="text-sm text-[var(--app-text-2)]">
-              Joined {new Date(profileData.created_at).toLocaleDateString('en-US', {
-                year: 'numeric', month: 'long', day: 'numeric',
-              })}
+              Joined {profileData.created_at ? new Date(profileData.created_at).toISOString().split('T')[0] : ''}
             </p>
 
             <div className="mt-4">
@@ -160,8 +158,8 @@ export default async function MyProfilePage({ params }: { params: Promise<{ id: 
                     </div>
                     <div>
                       <p className="font-semibold text-sm text-[var(--app-text)]">@{profileData.name}</p>
-                      <p suppressHydrationWarning className="text-xs text-[var(--app-text-3)]">
-                        {new Date(statusItem.created_at).toLocaleString()}
+                      <p className="text-xs text-[var(--app-text-3)]">
+                        {statusItem.created_at ? new Date(statusItem.created_at).toISOString().split('T')[0] : ''}
                       </p>
                     </div>
                   </div>
@@ -219,8 +217,8 @@ export default async function MyProfilePage({ params }: { params: Promise<{ id: 
                             <div>
                               <div className="flex items-center gap-2 mb-0.5">
                                 <span className="font-semibold text-xs text-[var(--app-text)]">@{comment.profiles?.name || 'Unknown'}</span>
-                                <span suppressHydrationWarning className="text-[10px] text-[var(--app-text-3)]">
-                                  {new Date(comment.created_at).toLocaleString()}
+                                <span className="text-[10px] text-[var(--app-text-3)]">
+                                  {comment.created_at ? new Date(comment.created_at).toISOString().split('T')[0] : ''}
                                 </span>
                               </div>
                               <p className="text-xs text-[var(--app-text-2)] leading-relaxed">{comment.comment}</p>
